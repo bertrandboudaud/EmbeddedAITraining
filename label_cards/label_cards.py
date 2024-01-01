@@ -48,13 +48,13 @@ def display_gui(camera_images_dir, json_file):
     json_data = create_or_load_json(json_file)
     image_index = 0
 
-    def select_card(event):
+    def select_card(event, selected_card):
         nonlocal image_index
-        x, y = event.x // card_width, event.y // card_height
-        selected_suit = ['hearts', 'diamonds', 'clubs', 'spades'][y]
-        selected_value = ['ace', '7', '8', '9', '10', 'jack', 'queen', 'king'][x]
+        #x, y = event.x // card_width, event.y // card_height
+        #selected_suit = ['hearts', 'diamonds', 'clubs', 'spades'][y]
+        #selected_value = ['ace', '7', '8', '9', '10', 'jack', 'queen', 'king'][x]
 
-        selected_card = f'{suit_values[selected_suit] + card_values[selected_value]:03d}'
+        #selected_card = f'{suit_values[selected_suit] + card_values[selected_value]:03d}'
         update_json(camera_images[image_index], selected_card, json_file)
         image_index += 1
         if image_index < len(camera_images):
@@ -71,7 +71,6 @@ def display_gui(camera_images_dir, json_file):
         label = tk.Label(frame_top, image=img)
         label.image = img
         label.grid(row=0, column=0, columnspan=1, padx=10, pady=10)
-        label.bind("<Button-1>", select_card)
 
     load_camera_image(image_index)
 
@@ -80,6 +79,8 @@ def display_gui(camera_images_dir, json_file):
         label = tk.Label(frame_bottom, image=card_img)
         label.image = card_img
         label.grid(row=row + 1, column=col, padx=2, pady=2)
+        label_value = [1,7,8,9,10,11,12,13]
+        label.bind(f"<Button-1>", lambda event, selected_card = (row+1) * 100 + label_value[col]: select_card(event, selected_card)) 
 
     root.mainloop()
 
